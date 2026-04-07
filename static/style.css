@@ -1,0 +1,33 @@
+body {
+ font-family: Arial, sans-serif;
+ background: #f4f4f4;
+}
+container {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ height: 100vh;
+}
+add-to-cart-button {
+ background: #e6a247;
+ border: none;
+ border-radius: 4px;
+ color: #fff;
+ padding: 0.8rem 1.5rem;
+ font-size: 16px;
+ text-transform: uppercase;
+ cursor: pointer;
+ transition: background 0.3s ease;
+}
+add-to-cart-button:hover {
+ background: #d18f2f;
+}
+added-to-cart {
+ display: none;
+}
+add-to-cart-button.added .add-to-cart {
+ display: none;
+}
+add-to-cart-button.added .added-to-cart {
+ display: inline-block;
+}

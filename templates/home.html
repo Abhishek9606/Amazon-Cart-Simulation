@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta  name="viewport" content="width=device-width, initial-scale=1.0">
+    <link = rel="stylesheet" href= "style.css" >
+    <title>Document</title>
+</head>
+<body>
+
+   {% for p in products %}
+  <a href="/product/{{p[0]}}">
+    <h3>Item Name : {{p[1]}}</h3>
+  </a>
+
+  
+  <br>
+{% endfor %}
+
+<a href = "/cart">View Cart Items</a>
+
+
+</body>
+</html>

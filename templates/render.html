@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+     <h3>Item Name : {{products[1]}}</h3>
+     <h3 >Item Description : {{products[2]}}</h3>
+     
+     <form method="POST" action="/add-to-cart">
+  <input type="hidden" name="product_id" value="{{products[0]}}">
+  <button type="submit">Add to Cart</button>
+</form>
+</body>
+</html>
