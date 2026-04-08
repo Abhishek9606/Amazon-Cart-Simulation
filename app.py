@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 @app.route("/")
 def home():
-    conn = get_db_connection
+    conn = get_db_connection()
     c = conn.cursor()
 
     c.execute("SELECT * FROM products")
@@ -20,7 +20,7 @@ def home():
 
 @app.route("/product/<int:id>")
 def product_details(id):
-    conn = get_db_connection
+    conn = get_db_connection()
     
     
     c = conn.cursor()
@@ -61,7 +61,7 @@ def cart():
     if "cart" not in session:
         return "Cart is empty.Please add something."
 
-    conn = get_db_connection
+    conn = get_db_connection()
     c = conn.cursor()
     items = session.get("cart")
     print(items)
