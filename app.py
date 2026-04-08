@@ -1,12 +1,16 @@
 from flask import Flask,render_template,session,request,url_for,redirect
-import sqlite3
+import db_connection import get_db_connection
+import os
+import mysql.connector
+
+
 
 app = Flask(__name__)
 app.secret_key = "app"
 
 @app.route("/")
 def home():
-    conn = sqlite3.connect("products.db")
+    conn = get_db_connection
     c = conn.cursor()
 
     c.execute("SELECT * FROM products")
@@ -17,7 +21,9 @@ def home():
 
 @app.route("/product/<int:id>")
 def product_details(id):
-    conn = sqlite3.connect("products.db")
+    conn = get_db_connection
+    
+    
     c = conn.cursor()
     identity = id
     print(identity)
@@ -29,29 +35,40 @@ def product_details(id):
 
 @app.route("/add-to-cart",methods = ["POST"])
 def add_to_cart():
-    if request.method == "POST":
-        product_id = request.form.get("product_id")
-        if "cart" not in session:
-            session["cart"] = []
-        else:
-            session["cart"].append(product_id)
-            print(session)
-            return redirect(url_for("cart"))
-    return redirect(url_for("home"))
+    product_id = request.form.get("product_id")
+ # Step 1: validate input
+    if not product_id:
+        return redirect(url_for("home"))
 
+    product_id = int(product_id)  # convert to int
+
+    # Step 2: initialize cart if not exists
+    if "cart" not in session:
+        session["cart"] = []
+
+    # Step 3: add item
+    cart = session["cart"]
+    cart.append(product_id)
+
+    # Step 4: IMPORTANT → reassign to trigger session update
+    session["cart"] = cart
+
+    print(session)
+
+    return redirect(url_for("home"))
 
 @app.route("/cart")
 def cart():
     if "cart" not in session:
         return "Cart is empty.Please add something."
 
-    conn = sqlite3.connect("products.db")
+    conn = get_db_connection
     c = conn.cursor()
     items = session.get("cart")
     print(items)
     if items:
-        placeholders = "".join(["/"] * len(items))
-        query = f"SELECT product_name,product_description FROM products WHERE product_id = placholders"
+        placeholders = ",".join(["?"] * len(items))
+        query = f"SELECT product_name,product_description FROM products WHERE product_id IN ({placeholders})"
         c.execute(query,items)
         results = c.fetchall()
         conn.close()
@@ -61,6 +78,4 @@ def cart():
 
     
 if __name__ == "__main__":
-    app.run(debug = True)
-
-
+    app.run(host="0.0.0.0", port=5000, debug=True)
