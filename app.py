@@ -1,5 +1,5 @@
 from flask import Flask,render_template,session,request,url_for,redirect
-import db_connection import get_db_connection
+from db_connection import get_db_connection
 import os
 import mysql.connector
 
